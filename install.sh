@@ -197,12 +197,19 @@ install_system_deps() {
             else
                 sudo apt install -y python3-venv
             fi
+            
+            # 安装FFmpeg用于流媒体检测
+            log_info "安装FFmpeg..."
+            sudo apt install -y ffmpeg
             ;;
         "centos"|"rhel"|"fedora"|"rocky"|"alma")
             log_info "安装CentOS/RHEL/Fedora依赖..."
             if [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION >= 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
                 sudo dnf groupinstall -y "Development Tools"
                 sudo dnf install -y openssl-devel libffi-devel python3-devel
+                # 安装FFmpeg
+                log_info "安装FFmpeg..."
+                sudo dnf install -y ffmpeg ffmpeg-devel
             else
                 sudo yum groupinstall -y "Development Tools"
                 sudo yum install -y openssl-devel libffi-devel python3-devel
@@ -210,6 +217,15 @@ install_system_deps() {
                 if [ "$OS_NAME" = "centos" ] && [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION < 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
                     log_info "安装PostgreSQL开发包（可选）..."
                     sudo yum install -y postgresql-devel || log_warn "PostgreSQL开发包安装失败，psycopg2将不可用"
+                    
+                    # CentOS 7需要启用EPEL仓库来安装FFmpeg
+                    log_info "安装FFmpeg（需要EPEL仓库）..."
+                    sudo yum install -y epel-release
+                    sudo yum install -y ffmpeg ffmpeg-devel || log_warn "FFmpeg安装失败，将使用HTTP检测模式"
+                else
+                    # 其他版本
+                    log_info "安装FFmpeg..."
+                    sudo yum install -y ffmpeg ffmpeg-devel || log_warn "FFmpeg安装失败，将使用HTTP检测模式"
                 fi
             fi
             ;;
@@ -217,11 +233,17 @@ install_system_deps() {
             log_info "安装macOS依赖..."
             if command -v brew > /dev/null 2>&1; then
                 brew install openssl libffi
+                # 安装FFmpeg
+                log_info "安装FFmpeg..."
+                brew install ffmpeg
             fi
             ;;
         "alpine")
             log_info "安装Alpine依赖..."
             sudo apk add --no-cache build-base openssl-dev libffi-dev
+            # 安装FFmpeg
+            log_info "安装FFmpeg..."
+            sudo apk add --no-cache ffmpeg ffmpeg-dev
             ;;
     esac
 }

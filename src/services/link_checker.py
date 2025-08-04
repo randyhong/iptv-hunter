@@ -63,27 +63,68 @@ class LinkChecker:
         start_time = time.time()
         
         try:
-            async with self.session.head(link.url, allow_redirects=True) as response:
+            # 对于IPTV流，先尝试HEAD请求，如果失败则尝试GET请求获取少量数据
+            response = None
+            
+            try:
+                # 首先尝试HEAD请求
+                async with self.session.head(link.url, allow_redirects=True) as resp:
+                    response = resp
+                    response_time = time.time() - start_time
+                    
+                    if resp.status == 200:
+                        return CheckResult.create_success(
+                            link_id=link.id,
+                            check_type="http",
+                            response_time=response_time,
+                            http_status=resp.status,
+                            content_type=resp.headers.get('Content-Type'),
+                            content_length=int(resp.headers.get('Content-Length', 0)),
+                            http_headers=dict(resp.headers),
+                        )
+                    elif resp.status in [405, 501]:  # Method Not Allowed, Not Implemented
+                        # HEAD不支持，尝试GET请求
+                        pass
+                    else:
+                        return CheckResult.create_failure(
+                            link_id=link.id,
+                            check_type="http",
+                            error_message=f"HTTP错误: {resp.status}",
+                            http_status=resp.status,
+                        )
+            except (aiohttp.ClientError, asyncio.TimeoutError):
+                # HEAD请求失败，尝试GET请求
+                pass
+            
+            # 尝试GET请求获取前1KB数据
+            headers = {'Range': 'bytes=0-1023'}  # 只获取前1KB
+            async with self.session.get(link.url, headers=headers, allow_redirects=True) as resp:
                 response_time = time.time() - start_time
                 
-                # 检查HTTP状态码
-                if response.status == 200:
-                    return CheckResult.create_success(
-                        link_id=link.id,
-                        check_type="http",
-                        response_time=response_time,
-                        http_status=response.status,
-                        content_type=response.headers.get('Content-Type'),
-                        content_length=int(response.headers.get('Content-Length', 0)),
-                        http_headers=dict(response.headers),
-                    )
-                else:
-                    return CheckResult.create_failure(
-                        link_id=link.id,
-                        check_type="http",
-                        error_message=f"HTTP错误: {response.status}",
-                        http_status=response.status,
-                    )
+                # 检查HTTP状态码 (200 OK 或 206 Partial Content)
+                if resp.status in [200, 206]:
+                    # 尝试读取少量数据以验证流是否可用
+                    try:
+                        data = await resp.read()
+                        if len(data) > 0:
+                            return CheckResult.create_success(
+                                link_id=link.id,
+                                check_type="http",
+                                response_time=response_time,
+                                http_status=resp.status,
+                                content_type=resp.headers.get('Content-Type'),
+                                content_length=int(resp.headers.get('Content-Length', len(data))),
+                                http_headers=dict(resp.headers),
+                            )
+                    except Exception:
+                        pass
+                
+                return CheckResult.create_failure(
+                    link_id=link.id,
+                    check_type="http",
+                    error_message=f"HTTP错误: {resp.status}",
+                    http_status=resp.status,
+                )
                     
         except asyncio.TimeoutError:
             return CheckResult.create_failure(
@@ -303,12 +344,14 @@ class LinkChecker:
             return http_result
         
         if not ffmpeg_result:
+            # 没有FFmpeg检测结果（比如ffprobe未安装），HTTP成功就认为链接可用
+            http_result.overall_score = 6  # 中等评分，因为没有详细的流信息
             return http_result
         
         if not ffmpeg_result.is_success:
-            # HTTP成功但FFmpeg失败，返回HTTP结果但标记质量问题
-            http_result.error_message = ffmpeg_result.error_message
-            http_result.overall_score = 3  # 降低评分
+            # HTTP成功但FFmpeg失败，仍然认为链接可用，但降低评分
+            http_result.overall_score = 4  # 较低评分，可能有质量问题
+            # 不设置error_message，因为HTTP检测成功
             return http_result
         
         # 两者都成功，合并信息
