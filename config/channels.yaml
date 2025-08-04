@@ -1,0 +1,406 @@
+# IPTV频道配置文件
+# 格式说明：
+# - name: 频道名称
+# - logo: 频道logo URL
+# - keywords: 搜索关键字列表
+# - category: 频道分类
+# - priority: 优先级 (1-10, 数字越大优先级越高)
+
+channels:
+  # ====== 央视频道 ======
+  - name: "CCTV1"
+    logo: "https://live.fanmingming.com/tv/CCTV1.png"
+    keywords: ["CCTV1", "央视一套", "中央一套", "综合"]
+    category: "央视"
+    priority: 10
+    
+  - name: "CCTV2"
+    logo: "https://live.fanmingming.com/tv/CCTV2.png"
+    keywords: ["CCTV2", "央视二套", "中央二套", "财经"]
+    category: "央视"
+    priority: 8
+    
+  - name: "CCTV3"
+    logo: "https://live.fanmingming.com/tv/CCTV3.png"
+    keywords: ["CCTV3", "央视三套", "中央三套", "综艺"]
+    category: "央视"
+    priority: 8
+    
+  - name: "CCTV4"
+    logo: "https://live.fanmingming.com/tv/CCTV4.png"
+    keywords: ["CCTV4", "央视四套", "中央四套", "中文国际"]
+    category: "央视"
+    priority: 7
+    
+  - name: "CCTV5"
+    logo: "https://live.fanmingming.com/tv/CCTV5.png"
+    keywords: ["CCTV5", "央视五套", "中央五套", "体育"]
+    category: "央视"
+    priority: 10
+    
+  - name: "CCTV5+"
+    logo: "https://live.fanmingming.com/tv/CCTV5+.png"
+    keywords: ["CCTV5+", "CCTV5PLUS", "央视体育赛事", "体育赛事"]
+    category: "央视"
+    priority: 9
+    
+  - name: "CCTV6"
+    logo: "https://live.fanmingming.com/tv/CCTV6.png"
+    keywords: ["CCTV6", "央视六套", "中央六套", "电影"]
+    category: "央视"
+    priority: 8
+    
+  - name: "CCTV7"
+    logo: "https://live.fanmingming.com/tv/CCTV7.png"
+    keywords: ["CCTV7", "央视七套", "中央七套", "国防军事"]
+    category: "央视"
+    priority: 6
+    
+  - name: "CCTV8"
+    logo: "https://live.fanmingming.com/tv/CCTV8.png"
+    keywords: ["CCTV8", "央视八套", "中央八套", "电视剧"]
+    category: "央视"
+    priority: 7
+    
+  - name: "CCTV9"
+    logo: "https://live.fanmingming.com/tv/CCTV9.png"
+    keywords: ["CCTV9", "央视九套", "中央九套", "纪录", "记录"]
+    category: "央视"
+    priority: 6
+    
+  - name: "CCTV10"
+    logo: "https://live.fanmingming.com/tv/CCTV10.png"
+    keywords: ["CCTV10", "央视十套", "中央十套", "科教"]
+    category: "央视"
+    priority: 6
+    
+  - name: "CCTV11"
+    logo: "https://live.fanmingming.com/tv/CCTV11.png"
+    keywords: ["CCTV11", "央视十一套", "中央十一套", "戏曲"]
+    category: "央视"
+    priority: 5
+    
+  - name: "CCTV12"
+    logo: "https://live.fanmingming.com/tv/CCTV12.png"
+    keywords: ["CCTV12", "央视十二套", "中央十二套", "社会与法"]
+    category: "央视"
+    priority: 6
+    
+  - name: "CCTV13"
+    logo: "https://live.fanmingming.com/tv/CCTV13.png"
+    keywords: ["CCTV13", "央视十三套", "中央十三套", "新闻"]
+    category: "央视"
+    priority: 8
+    
+  - name: "CCTV14"
+    logo: "https://live.fanmingming.com/tv/CCTV14.png"
+    keywords: ["CCTV14", "央视十四套", "中央十四套", "少儿"]
+    category: "央视"
+    priority: 6
+    
+  - name: "CCTV15"
+    logo: "https://live.fanmingming.com/tv/CCTV15.png"
+    keywords: ["CCTV15", "央视十五套", "中央十五套", "音乐"]
+    category: "央视"
+    priority: 5
+    
+  - name: "CCTV16"
+    logo: "https://live.fanmingming.com/tv/CCTV16.png"
+    keywords: ["CCTV16", "央视十六套", "中央十六套", "奥林匹克"]
+    category: "央视"
+    priority: 7
+    
+  - name: "CCTV17"
+    logo: "https://live.fanmingming.com/tv/CCTV17.png"
+    keywords: ["CCTV17", "央视十七套", "中央十七套", "农业农村"]
+    category: "央视"
+    priority: 5
+    
+  - name: "CCTV4K"
+    logo: "https://live.fanmingming.com/tv/CCTV4K.png"
+    keywords: ["CCTV4K", "央视4K", "中央4K", "超高清"]
+    category: "央视"
+    priority: 8
+    
+  # ====== 卫视频道 ======
+  - name: "湖南卫视"
+    logo: "https://live.fanmingming.com/tv/湖南卫视.png"
+    keywords: ["湖南卫视", "芒果TV", "湖南台", "芒果"]
+    category: "卫视"
+    priority: 10
+    
+  - name: "浙江卫视"
+    logo: "https://live.fanmingming.com/tv/浙江卫视.png"
+    keywords: ["浙江卫视", "浙江台", "中国蓝"]
+    category: "卫视"
+    priority: 9
+    
+  - name: "江苏卫视"
+    logo: "https://live.fanmingming.com/tv/江苏卫视.png"
+    keywords: ["江苏卫视", "江苏台", "荔枝台"]
+    category: "卫视"
+    priority: 9
+    
+  - name: "东方卫视"
+    logo: "https://live.fanmingming.com/tv/东方卫视.png"
+    keywords: ["东方卫视", "上海卫视", "东方台", "上海台"]
+    category: "卫视"
+    priority: 9
+    
+  - name: "北京卫视"
+    logo: "https://live.fanmingming.com/tv/北京卫视.png"
+    keywords: ["北京卫视", "北京台", "BTV卫视"]
+    category: "卫视"
+    priority: 8
+    
+  - name: "深圳卫视"
+    logo: "https://live.fanmingming.com/tv/深圳卫视.png"
+    keywords: ["深圳卫视", "深圳台"]
+    category: "卫视"
+    priority: 7
+    
+  - name: "广东卫视"
+    logo: "https://live.fanmingming.com/tv/广东卫视.png"
+    keywords: ["广东卫视", "广东台", "南方卫视"]
+    category: "卫视"
+    priority: 7
+    
+  - name: "安徽卫视"
+    logo: "https://live.fanmingming.com/tv/安徽卫视.png"
+    keywords: ["安徽卫视", "安徽台"]
+    category: "卫视"
+    priority: 6
+    
+  - name: "天津卫视"
+    logo: "https://live.fanmingming.com/tv/天津卫视.png"
+    keywords: ["天津卫视", "天津台"]
+    category: "卫视"
+    priority: 6
+    
+  - name: "重庆卫视"
+    logo: "https://live.fanmingming.com/tv/重庆卫视.png"
+    keywords: ["重庆卫视", "重庆台"]
+    category: "卫视"
+    priority: 6
+    
+  - name: "山东卫视"
+    logo: "https://live.fanmingming.com/tv/山东卫视.png"
+    keywords: ["山东卫视", "山东台", "齐鲁台"]
+    category: "卫视"
+    priority: 7
+    
+  - name: "四川卫视"
+    logo: "https://live.fanmingming.com/tv/四川卫视.png"
+    keywords: ["四川卫视", "四川台", "川台"]
+    category: "卫视"
+    priority: 6
+    
+  - name: "河南卫视"
+    logo: "https://live.fanmingming.com/tv/河南卫视.png"
+    keywords: ["河南卫视", "河南台", "大象台"]
+    category: "卫视"
+    priority: 6
+    
+  - name: "河北卫视"
+    logo: "https://live.fanmingming.com/tv/河北卫视.png"
+    keywords: ["河北卫视", "河北台"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "湖北卫视"
+    logo: "https://live.fanmingming.com/tv/湖北卫视.png"
+    keywords: ["湖北卫视", "湖北台", "长江台"]
+    category: "卫视"
+    priority: 6
+    
+  - name: "黑龙江卫视"
+    logo: "https://live.fanmingming.com/tv/黑龙江卫视.png"
+    keywords: ["黑龙江卫视", "黑龙江台", "龙视"]
+    category: "卫视"
+    priority: 6
+    
+  - name: "吉林卫视"
+    logo: "https://live.fanmingming.com/tv/吉林卫视.png"
+    keywords: ["吉林卫视", "吉林台"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "辽宁卫视"
+    logo: "https://live.fanmingming.com/tv/辽宁卫视.png"
+    keywords: ["辽宁卫视", "辽宁台", "北方台"]
+    category: "卫视"
+    priority: 6
+    
+  - name: "江西卫视"
+    logo: "https://live.fanmingming.com/tv/江西卫视.png"
+    keywords: ["江西卫视", "江西台"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "海南卫视"
+    logo: "https://live.fanmingming.com/tv/海南卫视.png"
+    keywords: ["海南卫视", "海南台", "旅游卫视"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "贵州卫视"
+    logo: "https://live.fanmingming.com/tv/贵州卫视.png"
+    keywords: ["贵州卫视", "贵州台"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "云南卫视"
+    logo: "https://live.fanmingming.com/tv/云南卫视.png"
+    keywords: ["云南卫视", "云南台"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "陕西卫视"
+    logo: "https://live.fanmingming.com/tv/陕西卫视.png"
+    keywords: ["陕西卫视", "陕西台"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "甘肃卫视"
+    logo: "https://live.fanmingming.com/tv/甘肃卫视.png"
+    keywords: ["甘肃卫视", "甘肃台"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "宁夏卫视"
+    logo: "https://live.fanmingming.com/tv/宁夏卫视.png"
+    keywords: ["宁夏卫视", "宁夏台"]
+    category: "卫视"
+    priority: 4
+    
+  - name: "青海卫视"
+    logo: "https://live.fanmingming.com/tv/青海卫视.png"
+    keywords: ["青海卫视", "青海台"]
+    category: "卫视"
+    priority: 4
+    
+  - name: "新疆卫视"
+    logo: "https://live.fanmingming.com/tv/新疆卫视.png"
+    keywords: ["新疆卫视", "新疆台"]
+    category: "卫视"
+    priority: 4
+    
+  - name: "西藏卫视"
+    logo: "https://live.fanmingming.com/tv/西藏卫视.png"
+    keywords: ["西藏卫视", "西藏台"]
+    category: "卫视"
+    priority: 4
+    
+  - name: "内蒙古卫视"
+    logo: "https://live.fanmingming.com/tv/内蒙古卫视.png"
+    keywords: ["内蒙古卫视", "内蒙古台"]
+    category: "卫视"
+    priority: 4
+    
+  - name: "广西卫视"
+    logo: "https://live.fanmingming.com/tv/广西卫视.png"
+    keywords: ["广西卫视", "广西台"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "福建卫视"
+    logo: "https://live.fanmingming.com/tv/福建卫视.png"
+    keywords: ["福建卫视", "福建台", "东南卫视"]
+    category: "卫视"
+    priority: 5
+    
+  - name: "山西卫视"
+    logo: "https://live.fanmingming.com/tv/山西卫视.png"
+    keywords: ["山西卫视", "山西台"]
+    category: "卫视"
+    priority: 5
+    
+  # ====== 体育频道 ======
+  - name: "广东体育"
+    logo: "https://live.fanmingming.com/tv/广东体育.png"
+    keywords: ["广东体育", "GRT体育", "广东体育频道"]
+    category: "体育"
+    priority: 8
+    
+  - name: "五星体育"
+    logo: "https://live.fanmingming.com/tv/五星体育.png"
+    keywords: ["五星体育", "上海体育", "五星"]
+    category: "体育"
+    priority: 8
+    
+  - name: "北京体育"
+    logo: "https://live.fanmingming.com/tv/BTV体育.png"
+    keywords: ["北京体育", "BTV体育", "北京体育频道"]
+    category: "体育"
+    priority: 7
+    
+  - name: "天津体育"
+    logo: "https://live.fanmingming.com/tv/天津体育.png"
+    keywords: ["天津体育", "天津体育频道"]
+    category: "体育"
+    priority: 6
+    
+  - name: "重庆体育"
+    logo: "https://live.fanmingming.com/tv/重庆体育.png"
+    keywords: ["重庆体育", "重庆体育频道"]
+    category: "体育"
+    priority: 6
+    
+  - name: "山东体育"
+    logo: "https://live.fanmingming.com/tv/山东体育.png"
+    keywords: ["山东体育", "山东体育频道"]
+    category: "体育"
+    priority: 6
+    
+  - name: "湖北体育"
+    logo: "https://live.fanmingming.com/tv/湖北体育.png"
+    keywords: ["湖北体育", "湖北体育频道"]
+    category: "体育"
+    priority: 6
+    
+  - name: "江苏体育"
+    logo: "https://live.fanmingming.com/tv/江苏体育.png"
+    keywords: ["江苏体育", "江苏体育频道"]
+    category: "体育"
+    priority: 6
+    
+  - name: "劲爆体育"
+    logo: "https://live.fanmingming.com/tv/劲爆体育.png"
+    keywords: ["劲爆体育", "SiTV劲爆体育"]
+    category: "体育"
+    priority: 7
+    
+  - name: "魅力足球"
+    logo: "https://live.fanmingming.com/tv/魅力足球.png"
+    keywords: ["魅力足球", "足球频道"]
+    category: "体育"
+    priority: 7
+    
+  - name: "风云足球"
+    logo: "https://live.fanmingming.com/tv/风云足球.png"
+    keywords: ["风云足球", "CCTV风云足球"]
+    category: "体育"
+    priority: 6
+    
+  - name: "风云音乐"
+    logo: "https://live.fanmingming.com/tv/风云音乐.png"
+    keywords: ["风云音乐", "CCTV风云音乐"]
+    category: "娱乐"
+    priority: 5
+    
+  - name: "咪咕体育"
+    logo: "https://live.fanmingming.com/tv/咪咕体育.png"
+    keywords: ["咪咕体育", "咪咕", "migu"]
+    category: "体育"
+    priority: 7
+
+# 全局设置
+settings:
+  # 每个频道最大链接数
+  max_links_per_channel: 10
+  # 链接检测间隔（小时）
+  check_interval: 6
+  # 链接过期时间（小时）
+  link_expire_hours: 24
+  # 是否启用自动更新
+  auto_update: true
