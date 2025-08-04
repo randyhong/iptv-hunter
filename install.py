@@ -24,20 +24,19 @@ def main():
     
     print(f"✓ Python版本: {python_version.major}.{python_version.minor}.{python_version.micro}")
     
-    # 删除旧的虚拟环境
+    # 检查虚拟环境
     venv_path = os.path.join(project_root, 'venv')
     if os.path.exists(venv_path):
-        print("🗑️  删除旧的虚拟环境...")
-        shutil.rmtree(venv_path)
-    
-    # 创建新的虚拟环境
-    print("📦 创建虚拟环境...")
-    try:
-        subprocess.run([sys.executable, '-m', 'venv', 'venv'], check=True)
-        print("✓ 虚拟环境创建成功")
-    except subprocess.CalledProcessError as e:
-        print(f"❌ 创建虚拟环境失败: {e}")
-        return False
+        print("📦 虚拟环境已存在，跳过创建...")
+    else:
+        # 创建新的虚拟环境
+        print("📦 创建虚拟环境...")
+        try:
+            subprocess.run([sys.executable, '-m', 'venv', 'venv'], check=True)
+            print("✓ 虚拟环境创建成功")
+        except subprocess.CalledProcessError as e:
+            print(f"❌ 创建虚拟环境失败: {e}")
+            return False
     
     # 获取虚拟环境中的Python路径
     if os.name == 'nt':  # Windows
@@ -58,7 +57,7 @@ def main():
     # 安装依赖
     print("📚 安装Python依赖...")
     try:
-        subprocess.run([venv_pip, 'install', '-r', 'requirements.txt'], check=True)
+        subprocess.run([venv_python, '-m', 'pip', 'install', '-r', 'requirements.txt'], check=True)
         print("✓ 依赖安装成功")
     except subprocess.CalledProcessError as e:
         print(f"❌ 依赖安装失败: {e}")
