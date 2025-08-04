@@ -8,12 +8,19 @@ from config.settings import get_settings
 settings = get_settings()
 
 # 创建数据库引擎
-engine = create_engine(
-    settings.database.url,
-    echo=settings.database.echo,
-    pool_size=settings.database.pool_size,
-    max_overflow=settings.database.max_overflow,
-)
+# 根据数据库类型动态配置参数
+engine_kwargs = {
+    'echo': settings.database.echo,
+}
+
+# 只有非SQLite数据库才支持连接池参数
+if not settings.database.url.startswith('sqlite'):
+    engine_kwargs.update({
+        'pool_size': settings.database.pool_size,
+        'max_overflow': settings.database.max_overflow,
+    })
+
+engine = create_engine(settings.database.url, **engine_kwargs)
 
 # 创建会话工厂
 SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
