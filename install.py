@@ -17,12 +17,35 @@ def main():
     
     # 检查Python版本
     python_version = sys.version_info
-    if python_version.major < 3 or (python_version.major == 3 and python_version.minor < 8):
+    
+    # 检测是否为CentOS 7
+    is_centos7 = False
+    if os.name != 'nt':  # 非Windows系统
+        try:
+            if os.path.exists('/etc/redhat-release'):
+                with open('/etc/redhat-release', 'r') as f:
+                    release_info = f.read()
+                    if 'CentOS Linux release 7' in release_info or 'Red Hat Enterprise Linux Server release 7' in release_info:
+                        is_centos7 = True
+        except Exception:
+            pass
+    
+    # 根据系统调整Python版本要求
+    if is_centos7:
+        min_version = (3, 6)  # CentOS 7支持Python 3.6
+        version_text = "Python 3.6或更高版本"
+    else:
+        min_version = (3, 8)  # 其他系统要求Python 3.8+
+        version_text = "Python 3.8或更高版本"
+    
+    if python_version.major < min_version[0] or (python_version.major == min_version[0] and python_version.minor < min_version[1]):
         print(f"❌ Python版本过低: {python_version.major}.{python_version.minor}")
-        print("   需要Python 3.8或更高版本")
+        print(f"   需要{version_text}")
         return False
     
     print(f"✓ Python版本: {python_version.major}.{python_version.minor}.{python_version.micro}")
+    if is_centos7:
+        print("📦 检测到CentOS 7，使用兼容模式")
     
     # 检查虚拟环境
     venv_path = os.path.join(project_root, 'venv')
