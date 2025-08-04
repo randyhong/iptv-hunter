@@ -34,17 +34,53 @@ iptv-hunter/
 
 ## 快速开始
 
-### 方法一：一键启动（推荐）
+### 步骤一：安装环境
+
+#### 跨平台自动安装（推荐）
+
+支持Ubuntu/CentOS/macOS等系统的一键安装：
+
+```bash
+# 运行跨平台安装脚本
+chmod +x install.sh
+./install.sh
+
+# 强制重新安装
+./install.sh --force
+
+# 指定Python版本
+./install.sh --python-version 3.11
+
+# 跳过依赖安装
+./install.sh --skip-deps
+```
+
+#### 手动安装（高级用户）
 
 ```bash
 # 1. 安装依赖
 pip install -r requirements.txt
 
-# 2. 快速开始（自动配置并运行）
-python quickstart.py
+# 2. 检查项目完整性
+python test_imports.py
 ```
 
-### 方法二：使用start.sh脚本（最简便）
+### 步骤二：配置频道（可选）
+
+编辑 `config/channels.yaml` 文件，添加你想要监控的频道：
+
+```yaml
+channels:
+  - name: "CCTV1"
+    logo: "https://live.fanmingming.com/tv/CCTV1.png"
+    keywords: ["CCTV1", "央视一套", "中央一套"]
+    category: "央视"
+    priority: 10
+```
+
+### 步骤三：运行程序
+
+#### 使用start.sh脚本（推荐）
 
 ```bash
 # 运行完整流程（默认）
@@ -57,32 +93,16 @@ python quickstart.py
 3. 检测链接可用性
 4. 生成 M3U 播放列表
 
-### 方法三：手动安装
+#### 使用Python脚本
 
 ```bash
-# 1. 安装依赖
-pip install -r requirements.txt
+# 快速开始（自动配置并运行）
+python quickstart.py
 
-# 2. 检查项目完整性
-python test_imports.py
-
-# 3. 运行程序
+# 或手动运行
 python run.py --help           # 查看帮助
 python run.py sync-channels    # 同步频道配置
 python run.py run              # 运行完整流程
-```
-
-### 配置频道
-
-编辑 `config/channels.yaml` 文件，添加你想要监控的频道：
-
-```yaml
-channels:
-  - name: "CCTV1"
-    logo: "https://live.fanmingming.com/tv/CCTV1.png"
-    keywords: ["CCTV1", "央视一套", "中央一套"]
-    category: "央视"
-    priority: 10
 ```
 
 ## 详细使用指南
