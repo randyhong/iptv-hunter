@@ -9,6 +9,24 @@ import sys
 import os
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
+
+def run_async(coro):
+    """
+    兼容Python 3.6的asyncio.run()
+    Python 3.7+使用asyncio.run()，Python 3.6使用事件循环
+    """
+    if hasattr(asyncio, 'run'):
+        # Python 3.7+
+        return asyncio.run(coro)
+    else:
+        # Python 3.6
+        loop = asyncio.new_event_loop()
+        asyncio.set_event_loop(loop)
+        try:
+            return loop.run_until_complete(coro)
+        finally:
+            loop.close()
+
 from src.utils.logger import setup_logger
 from src.utils.database import init_database, get_database_info, backup_database
 from src.utils.validators import validate_config_file
@@ -113,7 +131,7 @@ def collect(channel: Optional[str], category: Optional[str]):
         total_saved = sum(r["saved"] for r in results.values())
         logger.info(f"收集完成: 总共收集 {total_collected} 个链接，保存 {total_saved} 个新链接")
     
-    asyncio.run(_collect())
+    run_async(_collect())
 
 
 @cli.command()
@@ -166,7 +184,7 @@ def check(channel: Optional[str], category: Optional[str], max_links: int):
         finally:
             db.close()
     
-    asyncio.run(_check())
+    run_async(_check())
 
 
 @cli.command()
@@ -272,7 +290,7 @@ def run():
         except Exception as e:
             logger.error(f"完整更新流程失败: {e}")
     
-    asyncio.run(_run())
+    run_async(_run())
 
 
 @cli.command()
@@ -336,7 +354,7 @@ def backup(output: Optional[str]):
 def async_command(f):
     """装饰器：将异步函数包装为同步CLI命令"""
     def wrapper(*args, **kwargs):
-        return asyncio.run(f(*args, **kwargs))
+        return run_async(f(*args, **kwargs))
     wrapper.__name__ = f.__name__
     wrapper.__doc__ = f.__doc__
     return wrapper
