@@ -1,8 +1,21 @@
 """应用配置管理"""
 from typing import List, Optional
 from pydantic import BaseModel, Field
-from pydantic_settings import BaseSettings
 import os
+
+# 兼容导入 - 支持旧版本pydantic
+try:
+    from pydantic_settings import BaseSettings
+except ImportError:
+    # 对于pydantic < 2.0，使用BaseSettings从pydantic导入
+    try:
+        from pydantic import BaseSettings
+    except ImportError:
+        # 如果都没有，创建一个简单的BaseSettings
+        class BaseSettings(BaseModel):
+            class Config:
+                env_file = ".env"
+                env_file_encoding = "utf-8"
 
 
 class DatabaseConfig(BaseModel):
