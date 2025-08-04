@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 # IPTV Helper 安装脚本
 
@@ -18,7 +18,7 @@ fi
 echo "Python 版本检查通过: $python_version"
 
 # 检查 ffmpeg
-if ! command -v ffmpeg &> /dev/null; then
+if ! command -v ffmpeg > /dev/null 2>&1; then
     echo "警告: 未找到 ffmpeg，某些功能可能无法正常工作"
     echo "请安装 ffmpeg:"
     echo "  Ubuntu/Debian: sudo apt install ffmpeg"
@@ -35,7 +35,7 @@ python3 -m venv venv
 
 # 激活虚拟环境
 echo "激活虚拟环境..."
-source venv/bin/activate
+. venv/bin/activate
 
 # 升级 pip
 echo "升级 pip..."
@@ -63,7 +63,7 @@ python src/main.py sync-channels
 echo "安装完成！"
 echo ""
 echo "使用方法:"
-echo "1. 激活虚拟环境: source venv/bin/activate"
+echo "1. 激活虚拟环境: . venv/bin/activate"
 echo "2. 编辑频道配置: config/channels.yaml"
 echo "3. 同步频道配置: python src/main.py sync-channels"
 echo "4. 运行完整流程: python src/main.py run"

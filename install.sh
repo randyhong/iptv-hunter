@@ -229,7 +229,14 @@ check_venv() {
             rm -rf venv
         else
             log_info "虚拟环境已存在"
-            return 0
+            # 检查虚拟环境是否有效
+            if [ -f "venv/bin/python" ] && [ -f "venv/bin/pip" ]; then
+                log_info "虚拟环境有效"
+                return 0
+            else
+                log_warn "虚拟环境可能损坏，重新创建..."
+                rm -rf venv
+            fi
         fi
     fi
     
@@ -271,7 +278,7 @@ install_python_deps() {
     log_info "安装Python依赖..."
     
     # 激活虚拟环境
-    source venv/bin/activate
+    . venv/bin/activate
     
     # 升级pip
     pip install --upgrade pip
@@ -289,7 +296,7 @@ run_install_py() {
     log_info "运行install.py..."
     
     if [ -f "install.py" ]; then
-        source venv/bin/activate
+        . venv/bin/activate
         python install.py
     else
         log_warn "未找到install.py文件"
@@ -305,7 +312,7 @@ show_completion() {
     echo "📋 下一步操作:"
     echo "  1. 运行程序: ./start.sh"
     echo "  2. 查看帮助: ./start.sh --help"
-    echo "  3. 激活虚拟环境: source venv/bin/activate"
+    echo "  3. 激活虚拟环境: . venv/bin/activate"
     echo "  4. 运行Python脚本: python run.py --help"
     echo
     echo "📁 重要文件:"

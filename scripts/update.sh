@@ -13,7 +13,7 @@ if [ ! -d "venv" ]; then
 fi
 
 # 激活虚拟环境
-source venv/bin/activate
+. venv/bin/activate
 
 # 备份数据库
 echo "备份数据库..."

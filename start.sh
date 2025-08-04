@@ -137,7 +137,7 @@ check_environment() {
         log_error "虚拟环境不存在: $VENV_PATH"
         log_warn "请运行以下命令创建虚拟环境:"
         echo "  python3 -m venv venv"
-        echo "  source venv/bin/activate"
+        echo "  . venv/bin/activate"
         echo "  pip install -r requirements.txt"
         exit 1
     fi
