@@ -7,7 +7,7 @@
 set -e  # 遇到错误时退出
 
 # 脚本配置
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 PROJECT_ROOT="$SCRIPT_DIR"
 VENV_PATH="$PROJECT_ROOT/venv"
 PYTHON_CMD="$VENV_PATH/bin/python"
@@ -146,32 +146,32 @@ check_environment() {
 
 # 构建命令
 build_command() {
-    local cmd=("$PYTHON_CMD" "$MAIN_SCRIPT")
+    local cmd="$PYTHON_CMD $MAIN_SCRIPT"
     
     case "$MODE" in
         "collect")
-            cmd+=("collect")
-            [[ -n "$CHANNEL" ]] && cmd+=("--channel" "$CHANNEL")
-            [[ -n "$CATEGORY" ]] && cmd+=("--category" "$CATEGORY")
+            cmd="$cmd collect"
+            [[ -n "$CHANNEL" ]] && cmd="$cmd --channel $CHANNEL"
+            [[ -n "$CATEGORY" ]] && cmd="$cmd --category $CATEGORY"
             ;;
         "check")
-            cmd+=("check")
-            [[ -n "$CHANNEL" ]] && cmd+=("--channel" "$CHANNEL")
-            [[ -n "$CATEGORY" ]] && cmd+=("--category" "$CATEGORY")
-            [[ -n "$MAX_LINKS" ]] && cmd+=("--max-links" "$MAX_LINKS")
+            cmd="$cmd check"
+            [[ -n "$CHANNEL" ]] && cmd="$cmd --channel $CHANNEL"
+            [[ -n "$CATEGORY" ]] && cmd="$cmd --category $CATEGORY"
+            [[ -n "$MAX_LINKS" ]] && cmd="$cmd --max-links $MAX_LINKS"
             ;;
         "generate")
-            cmd+=("generate")
-            [[ -n "$OUTPUT" ]] && cmd+=("--output" "$OUTPUT")
-            [[ -n "$CATEGORY" ]] && cmd+=("--category" "$CATEGORY")
-            [[ -n "$MIN_QUALITY" ]] && cmd+=("--min-quality" "$MIN_QUALITY")
-            [[ -n "$FORMAT" ]] && cmd+=("--format" "$FORMAT")
+            cmd="$cmd generate"
+            [[ -n "$OUTPUT" ]] && cmd="$cmd --output $OUTPUT"
+            [[ -n "$CATEGORY" ]] && cmd="$cmd --category $CATEGORY"
+            [[ -n "$MIN_QUALITY" ]] && cmd="$cmd --min-quality $MIN_QUALITY"
+            [[ -n "$FORMAT" ]] && cmd="$cmd --format $FORMAT"
             ;;
         "stats")
-            cmd+=("stats")
+            cmd="$cmd stats"
             ;;
         "full")
-            cmd+=("run")
+            cmd="$cmd run"
             ;;
         *)
             log_error "未知的运行模式: $MODE"
@@ -179,15 +179,15 @@ build_command() {
             ;;
     esac
 
-    echo "${cmd[@]}"
+    echo "$cmd"
 }
 
 # 执行命令
 run_command() {
-    local cmd_array
-    IFS=' ' read -r -a cmd_array <<< "$(build_command)"
+    local cmd
+    cmd=$(build_command)
     
-    log_info "执行命令: ${cmd_array[*]}"
+    log_info "执行命令: $cmd"
     
     if [[ "$DEBUG" == "true" ]]; then
         export LOG_LEVEL=DEBUG
@@ -200,7 +200,7 @@ run_command() {
     # 执行命令
     if [[ "$FORCE" == "true" ]] || confirm_execution; then
         log_info "开始执行..."
-        "${cmd_array[@]}"
+        eval "$cmd"
         local exit_code=$?
         
         if [[ $exit_code -eq 0 ]]; then
