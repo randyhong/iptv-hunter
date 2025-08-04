@@ -206,6 +206,11 @@ install_system_deps() {
             else
                 sudo yum groupinstall -y "Development Tools"
                 sudo yum install -y openssl-devel libffi-devel python3-devel
+                # 为CentOS 7安装PostgreSQL开发包（可选）
+                if [ "$OS_NAME" = "centos" ] && [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION < 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
+                    log_info "安装PostgreSQL开发包（可选）..."
+                    sudo yum install -y postgresql-devel || log_warn "PostgreSQL开发包安装失败，psycopg2将不可用"
+                fi
             fi
             ;;
         "macos")
@@ -286,7 +291,10 @@ install_python_deps() {
     # 检测CentOS 7并使用兼容的requirements文件
     local requirements_file="requirements.txt"
     if [ "$OS_NAME" = "centos" ] && [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION < 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
-        if [ -f "requirements-centos7.txt" ]; then
+        if [ -f "requirements-centos7-minimal.txt" ]; then
+            log_info "检测到CentOS 7，使用最小化兼容依赖版本..."
+            requirements_file="requirements-centos7-minimal.txt"
+        elif [ -f "requirements-centos7.txt" ]; then
             log_info "检测到CentOS 7，使用兼容的依赖版本..."
             requirements_file="requirements-centos7.txt"
         else

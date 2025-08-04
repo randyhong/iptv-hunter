@@ -66,7 +66,10 @@ def main():
                 with open('/etc/redhat-release', 'r') as f:
                     release_info = f.read()
                     if 'CentOS Linux release 7' in release_info or 'Red Hat Enterprise Linux Server release 7' in release_info:
-                        if os.path.exists('requirements-centos7.txt'):
+                        if os.path.exists('requirements-centos7-minimal.txt'):
+                            print("📦 检测到CentOS 7，使用最小化兼容依赖版本...")
+                            requirements_file = 'requirements-centos7-minimal.txt'
+                        elif os.path.exists('requirements-centos7.txt'):
                             print("📦 检测到CentOS 7，使用兼容的依赖版本...")
                             requirements_file = 'requirements-centos7.txt'
         except Exception:
