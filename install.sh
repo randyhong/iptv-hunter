@@ -285,7 +285,7 @@ install_python_deps() {
     
     # 检测CentOS 7并使用兼容的requirements文件
     local requirements_file="requirements.txt"
-    if [ "$OS_NAME" = "rhel" ] && [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION < 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
+    if [ "$OS_NAME" = "centos" ] && [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION < 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
         if [ -f "requirements-centos7.txt" ]; then
             log_info "检测到CentOS 7，使用兼容的依赖版本..."
             requirements_file="requirements-centos7.txt"
