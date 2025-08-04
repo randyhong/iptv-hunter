@@ -56,8 +56,24 @@ def main():
     
     # 安装依赖
     print("📚 安装Python依赖...")
+    
+    # 检测CentOS 7并使用兼容的requirements文件
+    requirements_file = 'requirements.txt'
+    if os.name != 'nt':  # 非Windows系统
+        try:
+            # 检查是否为CentOS 7
+            if os.path.exists('/etc/redhat-release'):
+                with open('/etc/redhat-release', 'r') as f:
+                    release_info = f.read()
+                    if 'CentOS Linux release 7' in release_info or 'Red Hat Enterprise Linux Server release 7' in release_info:
+                        if os.path.exists('requirements-centos7.txt'):
+                            print("📦 检测到CentOS 7，使用兼容的依赖版本...")
+                            requirements_file = 'requirements-centos7.txt'
+        except Exception:
+            pass
+    
     try:
-        subprocess.run([venv_python, '-m', 'pip', 'install', '-r', 'requirements.txt'], check=True)
+        subprocess.run([venv_python, '-m', 'pip', 'install', '-r', requirements_file], check=True)
         print("✓ 依赖安装成功")
     except subprocess.CalledProcessError as e:
         print(f"❌ 依赖安装失败: {e}")

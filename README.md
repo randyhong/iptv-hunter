@@ -55,6 +55,8 @@ chmod +x install.sh
 ./install.sh --skip-deps
 ```
 
+**注意：** CentOS 7用户会自动使用兼容的依赖版本（`requirements-centos7.txt`），以确保与Python 3.6的兼容性。
+
 #### 手动安装（高级用户）
 
 ```bash

@@ -283,11 +283,22 @@ install_python_deps() {
     # 升级pip
     pip install --upgrade pip
     
+    # 检测CentOS 7并使用兼容的requirements文件
+    local requirements_file="requirements.txt"
+    if [ "$OS_NAME" = "rhel" ] && [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION < 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
+        if [ -f "requirements-centos7.txt" ]; then
+            log_info "检测到CentOS 7，使用兼容的依赖版本..."
+            requirements_file="requirements-centos7.txt"
+        else
+            log_warn "CentOS 7兼容文件不存在，使用默认requirements.txt"
+        fi
+    fi
+    
     # 安装依赖
-    if [ -f "requirements.txt" ]; then
-        pip install -r requirements.txt
+    if [ -f "$requirements_file" ]; then
+        pip install -r "$requirements_file"
     else
-        log_warn "未找到requirements.txt文件"
+        log_warn "未找到requirements文件: $requirements_file"
     fi
 }
 
