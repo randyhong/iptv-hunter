@@ -207,9 +207,13 @@ install_system_deps() {
             if [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION >= 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
                 sudo dnf groupinstall -y "Development Tools"
                 sudo dnf install -y openssl-devel libffi-devel python3-devel
-                # 安装FFmpeg
-                log_info "安装FFmpeg..."
-                sudo dnf install -y ffmpeg ffmpeg-devel
+                # 安装FFmpeg (CentOS 8需要启用额外仓库)
+                log_info "安装FFmpeg（需要启用额外仓库）..."
+                sudo dnf install -y epel-release
+                sudo dnf config-manager --set-enabled powertools || sudo dnf config-manager --set-enabled PowerTools || true
+                # 尝试安装RPM Fusion仓库以获得FFmpeg
+                sudo dnf install -y https://download1.rpmfusion.org/free/el/rpmfusion-free-release-8.noarch.rpm || true
+                sudo dnf install -y ffmpeg ffmpeg-devel || log_warn "FFmpeg安装失败，将使用HTTP检测模式"
             else
                 sudo yum groupinstall -y "Development Tools"
                 sudo yum install -y openssl-devel libffi-devel python3-devel
@@ -310,17 +314,26 @@ install_python_deps() {
     # 升级pip
     pip install --upgrade pip
     
-    # 检测CentOS 7并使用兼容的requirements文件
+    # 检测Python版本并使用兼容的requirements文件
     local requirements_file="requirements.txt"
-    if [ "$OS_NAME" = "centos" ] && [ -n "$OS_VERSION" ] && [ "$(echo "$OS_VERSION < 8" | bc -l 2>/dev/null || echo 0)" = "1" ]; then
+    local python_version=""
+    
+    # 获取Python版本
+    if command -v python3 > /dev/null 2>&1; then
+        python_version=$(python3 -c "import sys; print(f'{sys.version_info.major}.{sys.version_info.minor}')")
+        log_info "检测到Python版本: $python_version"
+    fi
+    
+    # 对于Python 3.6或CentOS 7/8，使用兼容版本
+    if [ "$python_version" = "3.6" ] || [ "$OS_NAME" = "centos" ]; then
         if [ -f "requirements-centos7-minimal.txt" ]; then
-            log_info "检测到CentOS 7，使用最小化兼容依赖版本..."
+            log_info "使用兼容依赖版本（适用于Python 3.6/CentOS）..."
             requirements_file="requirements-centos7-minimal.txt"
         elif [ -f "requirements-centos7.txt" ]; then
-            log_info "检测到CentOS 7，使用兼容的依赖版本..."
+            log_info "使用兼容依赖版本（适用于Python 3.6/CentOS）..."
             requirements_file="requirements-centos7.txt"
         else
-            log_warn "CentOS 7兼容文件不存在，使用默认requirements.txt"
+            log_warn "兼容文件不存在，使用默认requirements.txt"
         fi
     fi
     

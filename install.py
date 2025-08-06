@@ -80,21 +80,36 @@ def main():
     # 安装依赖
     print("📚 安装Python依赖...")
     
-    # 检测CentOS 7并使用兼容的requirements文件
+    # 检测Python版本和系统，使用兼容的requirements文件
     requirements_file = 'requirements.txt'
     if os.name != 'nt':  # 非Windows系统
         try:
-            # 检查是否为CentOS 7
-            if os.path.exists('/etc/redhat-release'):
+            # 检查Python版本
+            python_version = sys.version_info
+            use_compat = False
+            
+            # Python 3.6需要兼容版本
+            if python_version.major == 3 and python_version.minor == 6:
+                use_compat = True
+                print(f"📦 检测到Python {python_version.major}.{python_version.minor}，需要兼容版本...")
+            
+            # 检查是否为CentOS/RHEL
+            elif os.path.exists('/etc/redhat-release'):
                 with open('/etc/redhat-release', 'r') as f:
                     release_info = f.read()
-                    if 'CentOS Linux release 7' in release_info or 'Red Hat Enterprise Linux Server release 7' in release_info:
-                        if os.path.exists('requirements-centos7-minimal.txt'):
-                            print("📦 检测到CentOS 7，使用最小化兼容依赖版本...")
-                            requirements_file = 'requirements-centos7-minimal.txt'
-                        elif os.path.exists('requirements-centos7.txt'):
-                            print("📦 检测到CentOS 7，使用兼容的依赖版本...")
-                            requirements_file = 'requirements-centos7.txt'
+                    if 'CentOS' in release_info or 'Red Hat Enterprise Linux' in release_info:
+                        use_compat = True
+                        print(f"📦 检测到CentOS/RHEL系统，使用兼容版本...")
+            
+            # 使用兼容的requirements文件
+            if use_compat:
+                if os.path.exists('requirements-centos7-minimal.txt'):
+                    print("📦 使用最小化兼容依赖版本...")
+                    requirements_file = 'requirements-centos7-minimal.txt'
+                elif os.path.exists('requirements-centos7.txt'):
+                    print("📦 使用兼容依赖版本...")
+                    requirements_file = 'requirements-centos7.txt'
+                    
         except Exception:
             pass
     
