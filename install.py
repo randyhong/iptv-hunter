@@ -18,21 +18,30 @@ def main():
     # 检查Python版本
     python_version = sys.version_info
     
-    # 检测是否为CentOS 7
-    is_centos7 = False
+    # 检测是否为CentOS/RHEL或Python 3.6
+    is_compat_system = False
+    compat_reason = ""
+    
     if os.name != 'nt':  # 非Windows系统
         try:
+            # 检查是否为CentOS/RHEL
             if os.path.exists('/etc/redhat-release'):
                 with open('/etc/redhat-release', 'r') as f:
                     release_info = f.read()
-                    if 'CentOS Linux release 7' in release_info or 'Red Hat Enterprise Linux Server release 7' in release_info:
-                        is_centos7 = True
+                    if 'CentOS' in release_info or 'Red Hat Enterprise Linux' in release_info:
+                        is_compat_system = True
+                        compat_reason = "CentOS/RHEL系统"
         except Exception:
             pass
     
+    # 如果是Python 3.6，也使用兼容模式
+    if python_version.major == 3 and python_version.minor == 6:
+        is_compat_system = True
+        compat_reason = "Python 3.6"
+    
     # 根据系统调整Python版本要求
-    if is_centos7:
-        min_version = (3, 6)  # CentOS 7支持Python 3.6
+    if is_compat_system:
+        min_version = (3, 6)  # 兼容系统支持Python 3.6
         version_text = "Python 3.6或更高版本"
     else:
         min_version = (3, 8)  # 其他系统要求Python 3.8+
@@ -44,8 +53,8 @@ def main():
         return False
     
     print(f"✓ Python版本: {python_version.major}.{python_version.minor}.{python_version.micro}")
-    if is_centos7:
-        print("📦 检测到CentOS 7，使用兼容模式")
+    if is_compat_system:
+        print(f"📦 检测到{compat_reason}，使用兼容模式")
     
     # 检查虚拟环境
     venv_path = os.path.join(project_root, 'venv')
